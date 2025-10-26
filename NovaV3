@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NovaSMP • Elite Minecraft Experience</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --electric-blue: #0ff;
+            --neon-purple: #b537f2;
+            --hot-pink: #ff006e;
+            --lime-green: #39ff14;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Advanced Animated Background */
+        .cosmic-bg {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            background: radial-gradient(ellipse at top, #0a0a1f 0%, #000 100%);
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            animation: float 20s ease-in-out infinite;
+            opacity: 0.4;
+        }
+
+        .orb1 {
+            width: 600px;
+            height: 600px;
+            background: var(--electric-blue);
+            top: -200px;
+            left: -200px;
+            animation-delay: 0s;
+        }
+
+        .orb2 {
+            width: 500px;
+            height: 500px;
+            background: var(--neon-purple);
+            bottom: -150px;
+            right: -150px;
+            animation-delay: 7s;
+        }
+
+        .orb3 {
+            width: 400px;
+            height: 400px;
+            background: var(--hot-pink);
+            top: 50%;
+            left: 50%;
+            animation-delay: 14s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(100px, -100px) scale(1.1); }
+            66% { transform: translate(-100px, 100px) scale(0.9); }
+        }
+
+        .grid-overlay {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 100px 100px;
+            z-index: 1;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(100px, 100px); }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(20px);
+            background: rgba(0, 0, 0, 0.4);
+            border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+        }
+
+        .logo-box {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .pulse-dot {
+            width: 10px;
+            height: 10px;
+            background: var(--lime-green);
+            border-radius: 50%;
+            box-shadow: 0 0 20px var(--lime-green);
+            animation: pulsate 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulsate {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.5; }
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--electric-blue), var(--neon-purple), var(--hot-pink));
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientFlow 3s ease infinite;
+        }
+
+        @keyframes gradientFlow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .nav-items {
+            display: flex;
+            gap: 35px;
+            align-items: center;
+        }
+
+        .nav-items a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: all 0.3s;
+            position: relative;
+            text-transform: uppercase;
+        }
+
+        .nav-items a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--electric-blue);
+            transform: translateX(-50%);
+            transition: width 0.3s;
+        }
+
+        .nav-items a:hover {
+            color: #fff;
+        }
+
+        .nav-items a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 120px 5% 80px;
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 24px;
+            background: rgba(57, 255, 20, 0.1);
+            border: 1px solid rgba(57, 255, 20, 0.3);
+            border-radius: 100px;
+            margin-bottom: 40px;
+            backdrop-filter: blur(10px);
+        }
+
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            background: var(--lime-green);
+            border-radius: 50%;
+            box-shadow: 0 0 15px var(--lime-green);
+            animation: pulsate 1.5s infinite;
+        }
+
+        .status-text {
+            color: var(--lime-green);
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .hero-title {
+            font-size: clamp(70px, 15vw, 180px);
+            font-weight: 900;
+            line-height: 0.85;
+            margin-bottom: 30px;
+            letter-spacing: -6px;
+        }
+
+        .glitch-text {
+            background: linear-gradient(45deg, var(--electric-blue), var(--neon-purple), var(--hot-pink), var(--lime-green));
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glitchGradient 4s ease infinite;
+            text-shadow: 0 0 80px rgba(0, 255, 255, 0.5);
+            position: relative;
+        }
+
+        @keyframes glitchGradient {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .hero-tagline {
+            font-size: clamp(20px, 3vw, 28px);
+            color: rgba(255, 255, 255, 0.6);
+            max-width: 700px;
+            margin: 0 auto 50px;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 100px;
+        }
+
+        .cta-btn {
+            padding: 18px 40px;
+            font-size: 16px;
+            font-weight: 700;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: 'Outfit', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-primary {
+            background: linear-gradient(135deg, var(--electric-blue), var(--neon-purple));
+            color: #000;
+            box-shadow: 0 20px 60px rgba(0, 255, 255, 0.4);
+        }
+
+        .cta-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s;
+        }
+
+        .cta-primary:hover::before {
+            left: 100%;
+        }
+
+        .cta-primary:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 30px 80px rgba(0, 255, 255, 0.6);
+        }
+
+        .cta-secondary {
+            background: transparent;
+            color: #fff;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .cta-secondary:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--electric-blue);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 255, 255, 0.2);
+        }
+
+        /* Stats Display */
+        .stats-display {
+            display: flex;
+            gap: 50px;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 40px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(0, 255, 255, 0.1);
+            border-radius: 24px;
+            backdrop-filter: blur(20px);
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 42px;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--electric-blue), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+        }
+
+        .stat-text {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 8px;
+        }
+
+        /* Content Section */
+        .content-section {
+            padding: 150px 5%;
+            position: relative;
+            z-index: 2;
+        }
+
+        .section-label {
+            text-align: center;
+            font-size: 14px;
+            color: var(--electric-blue);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .section-heading {
+            text-align: center;
+            font-size: clamp(45px, 7vw, 80px);
+            font-weight: 900;
+            margin-bottom: 20px;
+            letter-spacing: -3px;
+        }
+
+        .section-subtext {
+            text-align: center;
+            font-size: 20px;
+            color: rgba(255, 255, 255, 0.5);
+            max-width: 700px;
+            margin: 0 auto 80px;
+            line-height: 1.6;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .feature-item {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 28px;
+            padding: 50px;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+        }
+
+        .feature-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.03), rgba(181, 55, 242, 0.03));
+            opacity: 0;
+            transition: opacity 0.6s;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-15px);
+            border-color: rgba(0, 255, 255, 0.4);
+            box-shadow: 0 40px 100px rgba(0, 255, 255, 0.2);
+        }
+
+        .feature-item:hover::before {
+            opacity: 1;
+        }
+
+        .feature-icon-box {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(181, 55, 242, 0.1));
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature-item h3 {
+            font-size: 26px;
+            margin-bottom: 18px;
+            font-weight: 700;
+            position: relative;
+            z-index: 1;
+        }
+
+        .feature-item p {
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.8;
+            font-size: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Connect Section */
+        .connect-section {
+            padding: 150px 5%;
+            position: relative;
+            z-index: 2;
+        }
+
+        .connect-box {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid rgba(0, 255, 255, 0.2);
+            border-radius: 40px;
+            padding: 80px 60px;
+            backdrop-filter: blur(30px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .connect-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent 0deg, rgba(0, 255, 255, 0.1) 60deg, transparent 120deg);
+            animation: rotateGradient 6s linear infinite;
+        }
+
+        @keyframes rotateGradient {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .connect-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .ip-container {
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.08), rgba(181, 55, 242, 0.08));
+            border: 3px dashed rgba(0, 255, 255, 0.3);
+            border-radius: 24px;
+            padding: 40px;
+            margin: 50px 0;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.5s;
+            position: relative;
+        }
+
+        .ip-container:hover {
+            border-color: var(--electric-blue);
+            box-shadow: 0 0 80px rgba(0, 255, 255, 0.4);
+            transform: scale(1.03);
+        }
+
+        .ip-address {
+            font-size: clamp(28px, 4vw, 44px);
+            font-weight: 900;
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, var(--electric-blue), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 12px;
+            letter-spacing: -1px;
+        }
+
+        .copy-text {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 25px;
+            margin: 50px 0;
+        }
+
+        .detail-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .detail-card:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(0, 255, 255, 0.2);
+        }
+
+        .detail-title {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 10px;
+        }
+
+        .detail-value {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--electric-blue);
+        }
+
+        .alert-box {
+            background: rgba(255, 0, 110, 0.08);
+            border: 2px solid rgba(255, 0, 110, 0.3);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .alert-box p {
+            color: var(--hot-pink);
+            font-weight: 700;
+            font-size: 16px;
+            margin: 0;
+        }
+
+        /* Footer */
+        footer {
+            padding: 100px 5% 50px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .footer-brand {
+            font-size: 36px;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--electric-blue), var(--neon-purple), var(--hot-pink));
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientFlow 3s ease infinite;
+            margin-bottom: 40px;
+        }
+
+        .footer-nav {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .footer-nav a {
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .footer-nav a:hover {
+            color: var(--electric-blue);
+        }
+
+        .footer-info {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        /* Mobile Menu */
+        .burger-menu {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            cursor: pointer;
+        }
+
+        .burger-menu span {
+            width: 28px;
+            height: 3px;
+            background: #fff;
+            border-radius: 3px;
+            transition: all 0.3s;
+        }
+
+        @media (max-width: 1024px) {
+            .burger-menu {
+                display: flex;
+            }
+
+            .nav-items {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 100%;
+                height: 100vh;
+                background: rgba(0, 0, 0, 0.98);
+                backdrop-filter: blur(30px);
+                flex-direction: column;
+                justify-content: center;
+                transition: right 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            }
+
+            .nav-items.open {
+                right: 0;
+            }
+
+            .hero-title {
+                letter-spacing: -3px;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .connect-box {
+                padding: 50px 30px;
+            }
+
+            .ip-address {
+                font-size: 24px;
+            }
+
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="cosmic-bg">
+        <div class="orb orb1"></div>
+        <div class="orb orb2"></div>
+        <div class="orb orb3"></div>
+    </div>
+    <div class="grid-overlay"></div>
+
+    <nav>
+        <div class="logo-box">
+            <div class="pulse-dot"></div>
+            <div class="logo-text">NOVASMP</div>
+        </div>
+        <div class="burger-menu" onclick="toggleNav()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="nav-items" id="mainNav">
+            <a href="#home">Home</a>
+            <a href="#features">Features</a>
+            <a href="#connect">Connect</a>
+            <a href="https://discord.gg/FtS5bD2J" target="_blank">Discord</a>
+        </div>
+    </nav>
+
+    <section class="hero" id="home">
+        <div class="status-pill">
+            <div class="status-indicator"></div>
+            <span class="status-text">Server Online • 24/7 Live</span>
+        </div>
+
+        <h1 class="hero-title">
+            <div class="glitch-text">NOVASMP</div>
+        </h1>
+
+        <p class="hero-tagline">
+            Next-Level Minecraft Survival Experience. Maximale Performance, epische Community, grenzenloses Abenteuer.
+        </p>
+
+        <div class="hero-cta">
+            <a href="#connect" class="cta-btn cta-primary">
+                <span>⚡</span> Server Joinen
+            </a>
+            <a href="https://discord.gg/FtS5bD2J" target="_blank" class="cta-btn cta-secondary">
+                <span>💬</span> Discord
+            </a>
+        </div>
+
+        <div class="stats-display">
+            <div class="stat">
+                <div class="stat-number">JAVA</div>
+                <div class="stat-text">Edition</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">1.12.8</div>
+                <div class="stat-text">Version</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">24/7</div>
+                <div class="stat-text">Online</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number">∞</div>
+                <div class="stat-text">Möglichkeiten</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section" id="features">
+        <div class="section-label">Features</div>
+        <h2 class="section-heading">
+            <span class="glitch-text">Unsere Stärken</span>
+        </h2>
+        <p class="section-subtext">
+            Premium Technologie trifft auf authentisches Minecraft-Gameplay
+        </p>
+
+        <div class="feature-grid">
+            <div class="feature-item">
+                <div class="feature-icon-box">⚡</div>
+                <h3>Ultra Performance</h3>
+                <p>Hochoptimierte Server mit dedizierter Hardware. Zero Lag, maximale TPS, perfekte Spielerfahrung.</p>
+            </div>
+
+            <div class="feature-item">
+                <div class="feature-icon-box">🛡️</div>
+                <h3>Premium Sicherheit</h3>
+                <p>Advanced Anti-Cheat, automatische Backups, geschützte Claims. Deine Builds sind 100% sicher.</p>
+            </div>
+
+            <div class="feature-item">
+                <div class="feature-icon-box">🎮</div>
+                <h3>Vanilla+ Gameplay</h3>
+                <p>Reines Minecraft mit smarten QoL-Features. Keine Pay2Win, nur purer Spielspaß.</p>
+            </div>
+
+            <div class="feature-item">
+                <div class="feature-icon-box">👥</div>
+                <h3>Elite Community</h3>
+                <p>Freundliche Spieler, professionelles Staff-Team, toxikfreie Umgebung.</p>
+            </div>
+
+            <div class="feature-item">
+                <div class="feature-icon-box">🎉</div>
+                <h3>Events & Rewards</h3>
+                <p>Wöchentliche Events, Build-Contests, PvP-Turniere mit exklusiven Preisen.</p>
+            </div>
+
+            <div class="feature-item">
+                <div class="feature-icon-box">💎</div>
+                <h3>Economy System</h3>
+                <p>Balanced Wirtschaft, Player-Shops, Trading-System. Verdiene, handel, wachse.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="connect-section" id="connect">
+        <div class="section-label">Connect</div>
+        <h2 class="section-heading">
+            <span class="glitch-text">Let's Go</span>
+        </h2>
+        <p class="section-subtext">
+            Kopiere die IP und starte dein Abenteuer auf NovaSMP
+        </p>
+
+        <div class="connect-box">
+            <div class="connect-content">
+                <div class="ip-container" onclick="copyIP()">
+                    <div class="ip-address">NovaSMP-sbGO.aternos.me</div>
+                    <div class="copy-text">🖱️ Click to Copy</div>
+                </div>
+
+                <div class="details-grid">
+                    <div class="detail-card">
+                        <div class="detail-title">Version</div>
+                        <div class="detail-value">1.12.8</div>
+                    </div>
+                    <div class="detail-card">
+                        <div class="detail-title">Edition</div>
+                        <div class="detail-value">Java Only</div>
+                    </div>
+                    <div class="detail-card">
+                        <div class="detail-title">Status</div>
+                        <div class="detail-value">Online</div>
+                    </div>
+                    <div class="detail-card">
+                        <div class="detail-title">Slots</div>
+                        <div class="detail-value">Unlimited</div>
+                    </div>
+                </div>
+
+                <div class="alert-box">
+                    <p>⚠️ WICHTIG: Nur Java Edition • Bedrock wird NICHT unterstützt!</p>
+                </div>
+
+                <div style="text-align: center; margin-top: 50px;">
+                    <p style="color: rgba(255,255,255,0.5); margin-bottom: 25px; font-size: 17px;">
+                        Join unsere Community auf Discord
+                    </p>
+                    <a href="https://discord.gg/FtS5bD2J" target="_blank" class="cta-btn cta-primary">
+                        <span>💬</span> Discord Server
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-brand">NOVASMP</div>
+        <div class="footer-nav">
+            <a href="#home">Home</a>
+            <a href="#features">Features</a>
+            <a href="#connect">Connect</a>
+            <a href="https://discord.gg/FtS5bD2J" target="_blank">Discord</a>
+        </div>
+        <div class="footer-info">
+            <p>&copy; 2025 NovaSMP. All Rights Reserved.</p>
+            <p style="margin-top: 15px;">Minecraft is a trademark of Mojang Studios. Not affiliated with Mojang.</p>
+        </div>
